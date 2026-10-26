@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>موزیک‌های من</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07040f;--card:#130c26;--tx:#f2ecff;--mut:#a79cc7;--a:#b44cff;--b:#00e5ff;--c:#ff3d9a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Vazirmatn',Tahoma,sans-serif;min-height:100vh;overflow-x:hidden}
+#bg{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 20% 20%,#3b0b6b55,transparent 45%),radial-gradient(circle at 80% 70%,#00b8d455,transparent 45%),radial-gradient(circle at 60% 10%,#ff3d9a33,transparent 40%);animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:scale(1.25) rotate(6deg)}}
+/* loader */
+#loader{position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity .8s,visibility .8s}
+#loader.off{opacity:0;visibility:hidden}
+.eq{display:flex;gap:6px;align-items:flex-end;height:70px}
+.eq i{width:9px;border-radius:5px;background:linear-gradient(var(--b),var(--a),var(--c));animation:bar 1s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:.15s}.eq i:nth-child(3){animation-delay:.3s}.eq i:nth-child(4){animation-delay:.45s}.eq i:nth-child(5){animation-delay:.6s}.eq i:nth-child(6){animation-delay:.75s}
+@keyframes bar{0%,100%{height:12px}50%{height:70px}}
+.pbar{width:230px;height:5px;border-radius:5px;background:#ffffff18;overflow:hidden}
+.pbar b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--b),var(--c));transition:width .25s}
+#pct{color:var(--mut);font-weight:300;letter-spacing:2px}
+/* header */
+header{text-align:center;padding:70px 20px 30px}
+h1{font-size:clamp(2.4rem,8vw,5rem);font-weight:800;margin:0;background:linear-gradient(90deg,var(--b),var(--a),var(--c),var(--b));background-size:300%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 6s linear infinite;filter:drop-shadow(0 0 22px #b44cff66)}
+@keyframes flow{to{background-position:300% 0}}
+header p{color:var(--mut);max-width:520px;margin:14px auto 0;font-weight:300}
+.bar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:26px 0 8px}
+button,.btn{font:inherit;cursor:pointer;border:0;border-radius:50px;padding:10px 22px;color:#fff;background:linear-gradient(135deg,var(--a),var(--c));font-weight:500;text-decoration:none;display:inline-block;transition:transform .2s,box-shadow .2s}
+button:hover,.btn:hover{transform:translateY(-2px);box-shadow:0 8px 26px #b44cff66}
+.ghost{background:#ffffff12;border:1px solid #ffffff22}
+#q{font:inherit;color:var(--tx);background:#ffffff0f;border:1px solid #ffffff22;border-radius:50px;padding:10px 20px;width:230px;outline:0}
+/* grid */
+main{max-width:1150px;margin:auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:26px}
+.card{background:var(--card);border:1px solid #ffffff14;border-radius:22px;overflow:hidden;position:relative;transition:transform .3s,box-shadow .3s;opacity:0;transform:translateY(30px);animation:in .7s forwards}
+@keyframes in{to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 0 0 1px var(--a),0 20px 50px #b44cff40}
+.cover{aspect-ratio:1;background-size:cover;background-position:center;position:relative}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,var(--card))}
+.play{position:absolute;z-index:2;bottom:12px;left:12px;width:54px;height:54px;padding:0;border-radius:50%;font-size:1.2rem}
+.info{padding:6px 18px 20px}
+.info h3{margin:0 0 2px;font-size:1.25rem}
+.info small{color:var(--b)}
+.info p{color:var(--mut);font-size:.9rem;line-height:1.8;font-weight:300;margin:10px 0 14px}
+.row{display:flex;gap:8px;align-items:center}
+.del{position:absolute;z-index:3;top:10px;right:10px;padding:4px 11px;background:#000a;display:none}
+body.edit .del{display:block}
+.playing .cover{box-shadow:inset 0 0 0 3px var(--c)}
+.vol{display:flex;align-items:center;gap:8px;margin-bottom:14px}.vol input{padding:0;border:0;background:none;accent-color:var(--c);height:20px;cursor:pointer}
+audio{display:none}
+/* modal */
+#modal{position:fixed;inset:0;background:#000b;backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+#modal.on{display:flex}
+form{background:var(--card);border:1px solid #ffffff22;border-radius:24px;padding:26px;width:100%;max-width:430px;display:grid;gap:12px;max-height:90vh;overflow:auto}
+form h2{margin:0}
+input,textarea{font:inherit;color:var(--tx);background:#ffffff0d;border:1px solid #ffffff22;border-radius:12px;padding:11px;width:100%;outline:0}
+input:focus,textarea:focus{border-color:var(--b)}
+label{color:var(--mut);font-size:.85rem}
+footer{text-align:center;color:var(--mut);padding:50px 0 30px;font-weight:300;font-size:.85rem}
+#empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:40px}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="loader"><div class="eq"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pbar"><b id="fill"></b></div><div id="pct">0%</div></div>
+
+<header>
+<h1>موزیک‌های من</h1>
+<p>مجموعه آهنگ‌هایی که ساختم؛ گوش بده، لینکشو بگیر و لذت ببر.</p>
+<div class="bar">
+<input id="q" placeholder="جستجو در آهنگ‌ها...">
+</div>
+</header>
+<main id="grid"></main>
+<footer>ساخته‌شده با ♥ برای موزیک</footer>
+<audio id="au"></audio>
+
+
+<script>
+const G=[["#b44cff","#00e5ff"],["#ff3d9a","#ffb300"],["#00e5ff","#2b5bff"],["#7cff6b","#00b8d4"]];
+/* ===== آهنگ‌هات رو فقط همین‌جا اضافه کن =====
+ t = نام آهنگ | a = خواننده | l = لینک آهنگ (mp3 مستقیم = پخش‌کننده، لینک پلتفرم = دکمه لینک)
+ i = لینک تصویر کاور (خالی = گرادیان رنگی) | d = توضیحات
+ برای آهنگ جدید یک خط مثل خطوط زیر کپی کن و بین‌شون کاما بذار */
+const S=[
+{t:"My Soul (روح من)",a:"Unknown",l:"https://cdn.imgurl.ir/uploads/b24377_.mp3",i:"https://cdn.imgurl.ir/uploads/r10274_.png",d:"ریمیکس شده توسط lovecombo"}
+];
+const $=s=>document.querySelector(s),au=$("#au");
+let cur=-1;
+function cover(s,n){return s.i?`url("${s.i.replace(/"/g,"%22")}")`:`linear-gradient(135deg,${G[n%4][0]},${G[n%4][1]})`}
+function esc(x){const d=document.createElement("div");d.textContent=x||"";return d.innerHTML}
+function render(){
+ const q=$("#q").value.trim().toLowerCase(),g=$("#grid");g.innerHTML="";
+ let c=0;
+ S.forEach((s,n)=>{
+  if(q&&!(s.t+" "+s.a+" "+s.d).toLowerCase().includes(q))return;
+  c++;
+  const direct=/\.(mp3|ogg|wav|m4a)(\?|$)/i.test(s.l);
+  const el=document.createElement("div");el.className="card"+(cur===n?" playing":"");el.style.animationDelay=(c*.08)+"s";
+  el.innerHTML=`<div class="cover" style='background-image:${cover(s,n)}'>${direct?`<button class="play" data-p="${n}">${cur===n&&!au.paused?"❚❚":"▶"}</button>`:""}</div>
+  <div class="info"><h3>${esc(s.t)}</h3><small>${esc(s.a)}</small><p>${esc(s.d)}</p>${direct?`<div class="vol">🔊<input type="range" min="0" max="1" step="0.01" value="${au.volume}" data-v></div>`:""}${s.l?`<a class="btn ghost" href="${esc(s.l)}" target="_blank" rel="noopener">🔗 باز کردن لینک</a>`:""}</div>`;
+  g.appendChild(el);
+ });
+ if(!c)g.innerHTML='<div id="empty">آهنگی پیدا نشد 🎧</div>';
+}
+$("#grid").onclick=e=>{
+ const p=e.target.closest("[data-p]");
+ if(p){const n=+p.dataset.p;if(cur===n){au.paused?au.play():au.pause()}else{cur=n;au.src=S[n].l;au.play()}setTimeout(render,50)}
+};
+au.onended=()=>{cur=-1;render()};
+$("#grid").oninput=e=>{if(e.target.matches("[data-v]")){au.volume=+e.target.value;document.querySelectorAll("[data-v]").forEach(x=>x.value=au.volume)}};
+$("#q").oninput=render;
+render();
+/* loading */
+let p=0;const fill=$("#fill"),pct=$("#pct");
+const iv=setInterval(()=>{p=Math.min(100,p+Math.random()*14+4);fill.style.width=p+"%";pct.textContent=Math.floor(p)+"%";
+ if(p>=100){clearInterval(iv);setTimeout(()=>$("#loader").classList.add("off"),350)}},220);
+</script>
+</body>
+</html>
